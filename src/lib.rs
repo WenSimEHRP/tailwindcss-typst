@@ -1,6 +1,5 @@
 use cbor4ii::serde::from_slice;
 use encre_css::Config;
-use encre_css_typography::Prose;
 use typst_wasm_protocol::wasm_export;
 
 #[wasm_export]
