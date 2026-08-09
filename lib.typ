@@ -1,26 +1,21 @@
 #let _plugin = plugin("main.wasm")
-#let tailwind-classes = state("tailwind-classes", "")
+#let tailwind-state = state("TAILWIND_CSS_GENERATION_STATE+alotofentropy", (:))
 
-#let tailwind-css(config-bytes) = context {
-  let classes = tailwind-classes.get()
-  let s = str(_plugin.generate(bytes(classes), config-bytes))
+#let tailwind-css(config: auto, state: tailwind-state) = context {
+  let classes = state.final().keys().join(" ")
+  let config = if config == auto {
+    (:)
+  } else {
+    config
+  }
+  let s = str(_plugin.generate(bytes(classes), cbor.encode(config)))
   html.style(s)
 }
 
-#let update-elem(elem) = {
-  // this is safe because when the class attr is array
-  // type typst would ensure that every single element
-  // inside the array doesn't contain whitespaces
-  let classes = elem.fields().attrs.at("class", default: ())
-  if type(classes) == array {
-    classes = classes.join(" ")
-  }
-  tailwind-classes.update(it => it + " " + classes)
+// Update the element.
+#let update-elem(elem, state: tailwind-state) = {
+  let classes = elem.attrs.at("class", default: ())
+  let classes = if type(classes) = str { classes.split(" ") } else { classes }
+  elem.update(d => d + classes.map(c => (c, none)).to-dict())
   elem
-}
-
-#let tailwind-page(c, config: auto) = {
-  show html.elem: update-elem
-  c
-  tailwind-css(if config == auto { bytes("") } else { cbor.encode(config) })
 }
