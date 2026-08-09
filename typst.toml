@@ -8,4 +8,4 @@ description = "TailwindCSS for HTML exports"
 repository = "https://github.com/wensimehrp/tailwindcss-typst"
 keywords = ["tailwind", "css", "styling", "web", "html"]
 categories = ["integration", "layout", "text"]
-compiler = "0.14.2"
+compiler = "0.14.0"
