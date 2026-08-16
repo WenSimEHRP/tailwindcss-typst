@@ -19,16 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y binaryen
+      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/magic-nix-cache-action@v14
       - uses: Swatinem/rust-cache@v2
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
-      - run: make main.wasm
-      - uses: typst-community/setup-typst@v4
-        with:
-          version: "0.15.1"
-      - run: examples/index.typ compile
+      - run: nix develop --command make
+      - run: nix develop --command bash examples/index.typ
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v5
       - uses: actions/deploy-pages@v4
