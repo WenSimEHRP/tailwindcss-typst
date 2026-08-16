@@ -1,0 +1,34 @@
+name: Generate Examples
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  generate-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y binaryen
+      - uses: Swatinem/rust-cache@v2
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - run: make main.wasm
+      - uses: typst-community/setup-typst@v4
+        with:
+          version: "0.15.1"
+      - run: examples/index.typ compile
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/deploy-pages@v4
