@@ -1,7 +1,4 @@
-#!/usr/bin/env -S typst c --open --features html -f html
-
-#import "@local/typhoon:0.1.1": *
-#show: tailwind-page
+#import "../lib.typ": *
 #import html: *
 
 #let links = (
@@ -36,7 +33,7 @@
 
 #let colourful-link = a.with(class: "text-blue-300 underline hover:text-purple-300 transition-all")
 
-#main(class: "bg-neutral-800 min-h-screen w-screen text-white text-sm", {
+#let content = main(class: "min-h-screen w-screen text-white text-sm", {
   div(class: "pt-10 p-6 flex flex-col gap-4 max-w-5xl mx-auto", {
     div(div(
       class: "mx-auto md:relative md:h-100 md:w-150 grid grid-cols-2 gap-4 md:flex md:items-center",
@@ -88,5 +85,18 @@
         View the repository
       ]
     ]
+  })
+})
+
+#html({
+  head({
+    meta(charset: "utf-8")
+    meta(name: "viewport", content: "width=device-width,initial-scale=1")
+    title[Typhoon Main Page Showcase]
+    context { style(tailwind-css()) }
+  })
+  show std.html.elem: update-elem
+  body(class: "bg-neutral-800", {
+    content
   })
 })
