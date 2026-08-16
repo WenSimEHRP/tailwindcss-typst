@@ -23,7 +23,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v14
       - uses: Swatinem/rust-cache@v2
       - run: nix develop --command make
-      - run: nix develop --command bash examples/index.typ
+      - run: nix develop --command bash examples/index.typ compile
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v5
       - uses: actions/deploy-pages@v4
