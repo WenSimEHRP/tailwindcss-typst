@@ -19,7 +19,7 @@ exit 0
     context { style(tailwind-css()) }
   })
   show std.html.elem: update-elem
-  body(class: "prose mx-auto my-5 prose-pre:bg-black", [
+  body(class: "prose mx-auto my-5 prose-pre:bg-black p-4", [
     #std.title[Typhoon]
     = Examples
     #div(class: {
